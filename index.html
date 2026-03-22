@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Οδηγός Οροπεδίου Λασιθίου</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #d35400;
+            --bg: #fdfcfb;
+            --text: #333;
+            --menu-bg: #fff;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            overscroll-behavior: none;
+        }
+
+        /* 1. ΓΛΩΣΣΕΣ & ΣΗΜΑΙΕΣ (ΠΑΝΩ ΠΑΝΩ) */
+        #lang-selector {
+            background: #fff;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 2000;
+        }
+        .flag-btn {
+            font-size: 24px; /* Μέγεθος για emojis */
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            padding: 2px;
+            transition: transform 0.2s;
+            background: none;
+        }
+        .flag-btn:active, .flag-btn.active {
+            transform: scale(1.1);
+            border-color: var(--accent);
+        }
+
+        /* ΤΙΤΛΟΣ */
+        header {
+            text-align: center;
+            padding: 20px 15px;
+            background: var(--primary);
+            color: white;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        /* 2. ΚΥΡΙΩΣ ΜΕΝΟΥ (ΚΟΥΜΠΙΑ) */
+        #main-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px;
+        }
+        .menu-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: background 0.2s;
+        }
+        .menu-btn:active {
+            background: #a04000;
+        }
+
+        /* 3. ΕΠΙΜΕΡΟΥΣ ΠΕΔΙΑ ΠΛΗΡΟΦΟΡΙΩΝ (ΚΡΥΦΑ) */
+        .info-section {
+            display: none; /* Κρυφό από προεπιλογή */
+            padding: 20px;
+            background: white;
+            min-height: 100vh;
+        }
+        .info-section.active {
+            display: block; /* Εμφάνιση όταν είναι ενεργό */
+        }
+
+        /* ΚΟΥΜΠΙ ΕΠΙΣΤΡΟΦΗΣ */
+        .back-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .back-btn:active {
+            background: #1a252f;
+        }
+
+        /* ΠΕΡΙΕΧΟΜΕΝΟ */
+        h2 {
+            color: var(--accent);
+            margin-top: 0;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ΔΙΑΧΕΙΡΙΣΗ ΓΛΩΣΣΩΝ */
+        [class*="lang-"] {
+            display: none; /* Κρύβουμε όλα τα κείμενα γλωσσών */
+        }
+        /* Θα εμφανίζουμε μόνο τη σωστή γλώσσα με JS */
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+<div id="lang-selector">
+    <button class="flag-btn active" onclick="setLanguage('gr')" title="Ελληνικά">🇬🇷</button>
+    <button class="flag-btn" onclick="setLanguage('en')" title="English">🇬🇧</button>
+    <button class="flag-btn" onclick="setLanguage('de')" title="Deutsch">🇩🇪</button>
+    <button class="flag-btn" onclick="setLanguage('fr')" title="Français">🇫🇷</button>
+    <button class="flag-btn" onclick="setLanguage('it')" title="Italiano">🇮🇹</button>
+</div>
+
+<header>
+    <h1>Οροπέδιο Λασιθίου</h1>
+</header>
+
+<div id="main-menu">
+    <button class="menu-btn lang-gr" onclick="showSection('info-general')">Γενικά</button>
+    <button class="menu-btn lang-en" onclick="showSection('info-general')">General</button>
+    <button class="menu-btn lang-de" onclick="showSection('info-general')">Allgemein</button>
+    <button class="menu-btn lang-fr" onclick="showSection('info-general')">Général</button>
+    <button class="menu-btn lang-it" onclick="showSection('info-general')">Generale</button>
+
+    <button class="menu-btn lang-gr" onclick="showSection('info-sights')">Αξιοθέατα</button>
+    <button class="menu-btn lang-en" onclick="showSection('info-sights')">Sights</button>
+    <button class="menu-btn lang-de" onclick="showSection('info-sights')">Sehenswürdigkeiten</button>
+    <button class="menu-btn lang-fr" onclick="showSection('info-sights')">Sites</button>
+    <button class="menu-btn lang-it" onclick="showSection('info-sights')">Attrazioni</button>
+
+    <button class="menu-btn lang-gr" onclick="showSection('info-windmills')">Ανεμόμυλοι</button>
+    <button class="menu-btn lang-en" onclick="showSection('info-windmills')">Windmills</button>
+    <button class="menu-btn lang-de" onclick="showSection('info-windmills')">Windmühlen</button>
+    <button class="menu-btn lang-fr" onclick="showSection('info-windmills')">Moulins</button>
+    <button class="menu-btn lang-it" onclick="showSection('info-windmills')">Mulini</button>
+
+    <button class="menu-btn lang-gr" onclick="showSection('info-gastronomy')">Γαστρονομία</button>
+    <button class="menu-btn lang-en" onclick="showSection('info-gastronomy')">Gastronomy</button>
+    <button class="menu-btn lang-de" onclick="showSection('info-gastronomy')">Gastronomie</button>
+    <button class="menu-btn lang-fr" onclick="showSection('info-gastronomy')">Gastronomie</button>
+    <button class="menu-btn lang-it" onclick="showSection('info-gastronomy')">Gastronomia</button>
+
+    <button class="menu-btn lang-gr" onclick="showSection('info-villages')">Χωριά</button>
+    <button class="menu-btn lang-en" onclick="showSection('info-villages')">Villages</button>
+    <button class="menu-btn lang-de" onclick="showSection('info-villages')">Dörfer</button>
+    <button class="menu-btn lang-fr" onclick="showSection('info-villages')">Villages</button>
+    <button class="menu-btn lang-it" onclick="showSection('info-villages')">Borghi</button>
+</div>
+
+<div id="info-general" class="info-section">
+    <button class="back-btn" onclick="showMenu()">&#8592; Back</button>
+    <div class="lang-gr">
+        <h2>Γενικά</h2>
+        <p>Το Οροπέδιο Λασιθίου είναι ένας εύφορος κάμπος σε υψόμετρο 850μ., περιτριγυρισμένος από τις κορυφές της Δίκτης. Είναι ένας τόπος με πλούσια παράδοση και ιστορία.</p>
+    </div>
+    <div class="lang-en">
+        <h2>General</h2>
+        <p>The Lasithi Plateau is a fertile plain at an altitude of 850m, surrounded by the peaks of Mount Dikti. It is a place with rich tradition and history.</p>
+    </div>
+    </div>
+
+<div id="info-sights" class="info-section">
+    <button class="back-btn" onclick="showMenu()">&#8592; Back</button>
+    <div class="lang-gr">
+        <h2>Αξιοθέατα</h2>
+        <p>Δικταίον Άντρον: Το σπήλαιο-γενέτειρα του Δία, γεμάτο σταλακτίτες και σταλαγμίτες. Μην χάσετε επίσης τη Μονή Κρουσταλλένιας.</p>
+    </div>
+    <div class="lang-en">
+        <h2>Sights</h2>
+        <p>Diktaion Andron: The birthplace cave of Zeus, filled with stalactites and stalagmites. Do not miss the Kroustallenia Monastery.</p>
+    </div>
+    </div>
+
+<div id="info-windmills" class="info-section">
+    <button class="back-btn" onclick="showMenu()">&#8592; Back</button>
+    <div class="lang-gr">
+        <h2>Ανεμόμυλοι</h2>
+        <p>Το σήμα κατατεθέν της περιοχής. Παλαιότερα υπήρχαν χιλιάδες λευκοί ανεμόμυλοι που χρησιμοποιούνταν για την άρδευση του κάμπου.</p>
+    </div>
+    <div class="lang-en">
+        <h2>Windmills</h2>
+        <p>The trademark of the area. In the past, there were thousands of white windmills used for irrigation of the plain.</p>
+    </div>
+    </div>
+
+<div id="info-gastronomy" class="info-section">
+    <button class="back-btn" onclick="showMenu()">&#8592; Back</button>
+    <div class="lang-gr">
+        <h2>Γαστρονομία</h2>
+        <p>Δοκιμάστε τις περίφημες πατάτες Λασιθίου, ντόπια τυριά (γραβιέρα, μυζήθρα) και παραδοσιακά πιάτα όπως το "οφτό" κρέας.</p>
+    </div>
+    <div class="lang-en">
+        <h2>Gastronomy</h2>
+        <p>Taste the famous Lasithi potatoes, local cheeses (graviera, myzithra), and traditional dishes like "ofto" meat.</p>
+    </div>
+    </div>
+
+<div id="info-villages" class="info-section">
+    <button class="back-btn" onclick="showMenu()">&#8592; Back</button>
+    <div class="lang-gr">
+        <h2>Χωριά</h2>
+        <p>Επισκεφθείτε το Τζερμιάδο (το κεφαλοχώρι), τον Άγιο Γεώργιο με τα μουσεία του και το Ψυχρό, κοντά στο Δικταίον Άντρον.</p>
+    </div>
+    <div class="lang-en">
+        <h2>Villages</h2>
+        <p>Visit Tzermiado (the main village), Agios Georgios with its museums, and Psychro, near the Diktaion Cave.</p>
+    </div>
+    </div>
+
+<footer>
+    &copy; 2024 Οδηγός Οροπεδίου Λασιθίου
+</footer>
+
+<script>
+    // Μεταβλητή για την τρέχουσα γλώσσα
+    let currentLang = 'gr';
+
+    // Σύστημα Αλλαγής Γλώσσας
+    function setLanguage(lang) {
+        currentLang = lang;
+
+        // 1. Ενημέρωση των σημαιών (active class)
+        document.querySelectorAll('.flag-btn').forEach(btn => btn.classList.remove('active'));
+        const activeFlag = document.querySelector(`.flag-btn[onclick="setLanguage('${lang}')"]`);
+        if (activeFlag) activeFlag.classList.add('active');
+
+        // 2. Εμφάνιση/Απόκρυψη κειμένων σε όλη τη σελίδα
+        // Πρώτα κρύβουμε όλα τα ξενόγλωσσα στοιχεία
+        document.querySelectorAll('[class*="lang-"]').forEach(el => {
+            el.style.display = 'none';
+        });
+        
+        // Μετά εμφανίζουμε μόνο αυτά της επιλεγμένης γλώσσας
+        document.querySelectorAll('.lang-' + lang).forEach(el => {
+            // Ειδική μεταχείριση για τα buttons στο main menu
+            if (el.classList.contains('menu-btn')) {
+                // Εμφανίζουμε το button, αλλά μόνο αν είμαστε στο main menu view
+                if (document.getElementById('main-menu').style.display !== 'none') {
+                    el.style.display = 'block';
+                }
+            } else {
+                el.style.display = 'block';
+            }
+        });
+    }
+
+    // Εμφάνιση Συγκεκριμένου Πεδίου Πληροφοριών
+    function showSection(sectionId) {
+        // 1. Κρύβουμε το κύριο μενού
+        document.getElementById('main-menu').style.display = 'none';
+
+        // 2. Εμφανίζουμε το σωστό info section
+        const section = document.getElementById(sectionId);
+        section.classList.add('active');
+
+        // 3. Σιγουρευόμαστε ότι εμφανίζεται η σωστή γλώσσα
+        setLanguage(currentLang);
+        
+        // 4. Scroll στην κορυφή
+        window.scrollTo(0, 0);
+    }
+
+    // Επιστροφή στο Κυρίως Μενού
+    function showMenu() {
+        // 1. Κρύβουμε όλα τα info sections
+        document.querySelectorAll('.info-section').forEach(section => {
+            section.classList.remove('active');
+        });
+
+        // 2. Εμφανίζουμε το κύριο μενού
+        document.getElementById('main-menu').style.display = 'flex';
+        
+        // 3. Σιγουρευόμαστε ότι τα κουμπιά του μενού είναι στη σωστή γλώσσα
+        setLanguage(currentLang);
+    }
+
+    // Αρχική ρύθμιση γλώσσας κατά τη φόρτωση
+    document.addEventListener('DOMContentLoaded', () => {
+        setLanguage('gr');
+    });
+</script>
+
+</body>
+</html>
