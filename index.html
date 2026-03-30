@@ -2,319 +2,276 @@
 <html lang="el">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Οδηγός Οροπεδίου Λασιθίου</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lasithi Plateau Info Point</title>
     <style>
         :root {
             --primary: #2c3e50;
-            --accent: #d35400;
-            --bg: #fdfcfb;
-            --text: #333;
-            --menu-bg: #fff;
+            --accent: #a67c52;
+            --bg: #fdfcf9;
+            --white: #ffffff;
         }
+
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: var(--bg);
-            color: var(--text);
-            overscroll-behavior: none;
+            background-color: #dcdcdc;
+            display: flex;
+            justify-content: center;
         }
 
-        /* 1. ΓΛΩΣΣΕΣ & ΣΗΜΑΙΕΣ (ΠΑΝΩ ΠΑΝΩ) */
-        #lang-selector {
-            background: #fff;
-            padding: 10px 0;
+        .mobile-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        /* Language Selector */
+        .lang-bar {
             display: flex;
             justify-content: center;
             gap: 15px;
+            margin-bottom: 20px;
             border-bottom: 1px solid #eee;
-            position: sticky;
-            top: 0;
-            z-index: 2000;
+            padding-bottom: 15px;
         }
-        .flag-btn {
-            font-size: 24px; /* Μέγεθος για emojis */
+
+        .flag {
+            font-size: 28px;
             cursor: pointer;
             border: 2px solid transparent;
-            border-radius: 5px;
-            padding: 2px;
-            transition: transform 0.2s;
             background: none;
+            border-radius: 50%;
+            padding: 5px;
+            transition: 0.3s;
+            filter: grayscale(100%);
         }
-        .flag-btn:active, .flag-btn.active {
+
+        .flag.active {
+            filter: grayscale(0%);
             transform: scale(1.1);
             border-color: var(--accent);
         }
 
-        /* ΤΙΤΛΟΣ */
-        header {
-            text-align: center;
-            padding: 20px 15px;
-            background: var(--primary);
-            color: white;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 1.5rem;
+        /* Header */
+        header { text-align: center; margin-bottom: 20px; }
+        h1 { color: var(--primary); margin: 0; font-size: 1.6rem; text-transform: uppercase; }
+        .tagline { color: var(--accent); font-weight: bold; font-style: italic; margin-top: 5px; }
+
+        .intro {
+            background: var(--white);
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 5px solid var(--accent);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: justify;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* 2. ΚΥΡΙΩΣ ΜΕΝΟΥ (ΚΟΥΜΠΙΑ) */
-        #main-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding: 20px;
-        }
+        /* Menu */
+        .menu-grid { display: flex; flex-direction: column; gap: 12px; }
         .menu-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 18px;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: background 0.2s;
-        }
-        .menu-btn:active {
-            background: #a04000;
-        }
-
-        /* 3. ΕΠΙΜΕΡΟΥΣ ΠΕΔΙΑ ΠΛΗΡΟΦΟΡΙΩΝ (ΚΡΥΦΑ) */
-        .info-section {
-            display: none; /* Κρυφό από προεπιλογή */
-            padding: 20px;
-            background: white;
-            min-height: 100vh;
-        }
-        .info-section.active {
-            display: block; /* Εμφάνιση όταν είναι ενεργό */
-        }
-
-        /* ΚΟΥΜΠΙ ΕΠΙΣΤΡΟΦΗΣ */
-        .back-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 0.9rem;
+            padding: 18px 15px;
+            border-radius: 12px;
+            font-size: 0.95rem;
             cursor: pointer;
-            margin-bottom: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
+            transition: 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-weight: 500;
         }
-        .back-btn:active {
-            background: #1a252f;
-        }
-
-        /* ΠΕΡΙΕΧΟΜΕΝΟ */
-        h2 {
-            color: var(--accent);
-            margin-top: 0;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-        }
-        p {
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-        }
-
-        /* ΔΙΑΧΕΙΡΙΣΗ ΓΛΩΣΣΩΝ */
-        [class*="lang-"] {
-            display: none; /* Κρύβουμε όλα τα κείμενα γλωσσών */
-        }
-        /* Θα εμφανίζουμε μόνο τη σωστή γλώσσα με JS */
+        .menu-btn:active { transform: scale(0.97); background: var(--accent); }
 
         footer {
-            text-align: center;
-            padding: 20px;
-            color: #777;
-            font-size: 0.8rem;
+            margin-top: 30px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            text-align: justify;
+            color: #444;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+            font-style: italic;
         }
+
+        /* Popups */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 85%;
+            max-width: 380px;
+            max-height: 75vh;
+            border-radius: 20px;
+            padding: 25px;
+            position: relative;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .close-x {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            color: #c0392b;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .modal-title { color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-bottom: 15px; font-size: 1.1rem; padding-right: 20px;}
+        .modal-text { line-height: 1.7; text-align: justify; font-size: 0.92rem; color: #333; }
+        .modal-text b { color: var(--primary); }
     </style>
 </head>
 <body>
 
-<div id="lang-selector">
-    <button class="flag-btn active" onclick="setLanguage('gr')" title="Ελληνικά">🇬🇷</button>
-    <button class="flag-btn" onclick="setLanguage('en')" title="English">🇬🇧</button>
-    <button class="flag-btn" onclick="setLanguage('de')" title="Deutsch">🇩🇪</button>
-    <button class="flag-btn" onclick="setLanguage('fr')" title="Français">🇫🇷</button>
-    <button class="flag-btn" onclick="setLanguage('it')" title="Italiano">🇮🇹</button>
+<div class="mobile-container">
+    <div class="lang-bar">
+        <button class="flag active" onclick="setLang('el')">🇬🇷</button>
+        <button class="flag" onclick="setLang('en')">🇬🇧</button>
+        <button class="flag" onclick="setLang('fr')">🇫🇷</button>
+        <button class="flag" onclick="setLang('de')">🇩🇪</button>
+    </div>
+
+    <header>
+        <h1 id="txt-title">Οροπέδιο Λασιθίου</h1>
+        <div class="tagline" id="txt-tagline">τόπος Θεών και Θρύλλων</div>
+    </header>
+
+    <div class="intro" id="txt-intro">
+        Το Οροπέδιο Λασιθίου είναι ένας τόπος ευλογημένος, κλεισμένος μέσα στα βουνά της Δίκτης σε υψόμετρο 850 μέτρων, που συνδυάζει τη μυθολογία, την άγρια φύση και μια μακρά ιστορία επιβίωσης. Είναι ένας από τους λίγους τόπους στην Ελλάδα που κατοικείται αδιάλειπτα για χιλιάδες χρόνια, παρά τις σκληρές κλιματικές συνθήκες.
+    </div>
+
+    <div class="menu-grid">
+        <button class="menu-btn" id="btn-1" onclick="showPopup(1)">Η Μυθολογική και Προϊστορική Ταυτότητα</button>
+        <button class="menu-btn" id="btn-2" onclick="showPopup(2)">Η Περίοδος της Ενετοκρατίας</button>
+        <button class="menu-btn" id="btn-3" onclick="showPopup(3)">Η Θρησκευτική και Επαναστατική Παράδοση</button>
+        <button class="menu-btn" id="btn-4" onclick="showPopup(4)">Το Φυσικό Τοπίο και οι Κρυμμένοι Θησαυροί</button>
+        <button class="menu-btn" id="btn-5" onclick="showPopup(5)">Ο 20ος Αιώνας: Οι Χιλιάδες Ανεμόμυλοι</button>
+    </div>
+
+    <footer id="txt-footer">
+        Το Οροπέδιο Λασιθίου παραμένει ένας τόπος αυθεντικός. Από τη γέννηση του Δία στο Δικταίο Άντρο, μέχρι τις θυσίες των Λασιθιωτών στις μάχες του 1867 και την παγκόσμια καινοτομία των ανεμόμυλων, η περιοχή αποτελεί έναν πυλώνα της κρητικής ταυτότητας. Είναι ένας τόπος όπου η φύση, η αρχαιολογία και η θρησκεία συνυπάρχουν σε κάθε σπιθαμή γης.
+    </footer>
 </div>
 
-<header>
-    <h1>Οροπέδιο Λασιθίου</h1>
-</header>
-
-<div id="main-menu">
-    <button class="menu-btn lang-gr" onclick="showSection('info-general')">Γενικά</button>
-    <button class="menu-btn lang-en" onclick="showSection('info-general')">General</button>
-    <button class="menu-btn lang-de" onclick="showSection('info-general')">Allgemein</button>
-    <button class="menu-btn lang-fr" onclick="showSection('info-general')">Général</button>
-    <button class="menu-btn lang-it" onclick="showSection('info-general')">Generale</button>
-
-    <button class="menu-btn lang-gr" onclick="showSection('info-sights')">Αξιοθέατα</button>
-    <button class="menu-btn lang-en" onclick="showSection('info-sights')">Sights</button>
-    <button class="menu-btn lang-de" onclick="showSection('info-sights')">Sehenswürdigkeiten</button>
-    <button class="menu-btn lang-fr" onclick="showSection('info-sights')">Sites</button>
-    <button class="menu-btn lang-it" onclick="showSection('info-sights')">Attrazioni</button>
-
-    <button class="menu-btn lang-gr" onclick="showSection('info-windmills')">Ανεμόμυλοι</button>
-    <button class="menu-btn lang-en" onclick="showSection('info-windmills')">Windmills</button>
-    <button class="menu-btn lang-de" onclick="showSection('info-windmills')">Windmühlen</button>
-    <button class="menu-btn lang-fr" onclick="showSection('info-windmills')">Moulins</button>
-    <button class="menu-btn lang-it" onclick="showSection('info-windmills')">Mulini</button>
-
-    <button class="menu-btn lang-gr" onclick="showSection('info-gastronomy')">Γαστρονομία</button>
-    <button class="menu-btn lang-en" onclick="showSection('info-gastronomy')">Gastronomy</button>
-    <button class="menu-btn lang-de" onclick="showSection('info-gastronomy')">Gastronomie</button>
-    <button class="menu-btn lang-fr" onclick="showSection('info-gastronomy')">Gastronomie</button>
-    <button class="menu-btn lang-it" onclick="showSection('info-gastronomy')">Gastronomia</button>
-
-    <button class="menu-btn lang-gr" onclick="showSection('info-villages')">Χωριά</button>
-    <button class="menu-btn lang-en" onclick="showSection('info-villages')">Villages</button>
-    <button class="menu-btn lang-de" onclick="showSection('info-villages')">Dörfer</button>
-    <button class="menu-btn lang-fr" onclick="showSection('info-villages')">Villages</button>
-    <button class="menu-btn lang-it" onclick="showSection('info-villages')">Borghi</button>
+<div id="modal" class="modal" onclick="closePopup()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-x" onclick="closePopup()">✕</span>
+        <h3 class="modal-title" id="pop-title"></h3>
+        <div class="modal-text" id="pop-text"></div>
+    </div>
 </div>
-
-<div id="info-general" class="info-section">
-    <button class="back-btn" onclick="showMenu()">&#8592; Back</button>
-    <div class="lang-gr">
-        <h2>Γενικά</h2>
-        <p>Το Οροπέδιο Λασιθίου είναι ένας εύφορος κάμπος σε υψόμετρο 850μ., περιτριγυρισμένος από τις κορυφές της Δίκτης. Είναι ένας τόπος με πλούσια παράδοση και ιστορία.</p>
-    </div>
-    <div class="lang-en">
-        <h2>General</h2>
-        <p>The Lasithi Plateau is a fertile plain at an altitude of 850m, surrounded by the peaks of Mount Dikti. It is a place with rich tradition and history.</p>
-    </div>
-    </div>
-
-<div id="info-sights" class="info-section">
-    <button class="back-btn" onclick="showMenu()">&#8592; Back</button>
-    <div class="lang-gr">
-        <h2>Αξιοθέατα</h2>
-        <p>Δικταίον Άντρον: Το σπήλαιο-γενέτειρα του Δία, γεμάτο σταλακτίτες και σταλαγμίτες. Μην χάσετε επίσης τη Μονή Κρουσταλλένιας.</p>
-    </div>
-    <div class="lang-en">
-        <h2>Sights</h2>
-        <p>Diktaion Andron: The birthplace cave of Zeus, filled with stalactites and stalagmites. Do not miss the Kroustallenia Monastery.</p>
-    </div>
-    </div>
-
-<div id="info-windmills" class="info-section">
-    <button class="back-btn" onclick="showMenu()">&#8592; Back</button>
-    <div class="lang-gr">
-        <h2>Ανεμόμυλοι</h2>
-        <p>Το σήμα κατατεθέν της περιοχής. Παλαιότερα υπήρχαν χιλιάδες λευκοί ανεμόμυλοι που χρησιμοποιούνταν για την άρδευση του κάμπου.</p>
-    </div>
-    <div class="lang-en">
-        <h2>Windmills</h2>
-        <p>The trademark of the area. In the past, there were thousands of white windmills used for irrigation of the plain.</p>
-    </div>
-    </div>
-
-<div id="info-gastronomy" class="info-section">
-    <button class="back-btn" onclick="showMenu()">&#8592; Back</button>
-    <div class="lang-gr">
-        <h2>Γαστρονομία</h2>
-        <p>Δοκιμάστε τις περίφημες πατάτες Λασιθίου, ντόπια τυριά (γραβιέρα, μυζήθρα) και παραδοσιακά πιάτα όπως το "οφτό" κρέας.</p>
-    </div>
-    <div class="lang-en">
-        <h2>Gastronomy</h2>
-        <p>Taste the famous Lasithi potatoes, local cheeses (graviera, myzithra), and traditional dishes like "ofto" meat.</p>
-    </div>
-    </div>
-
-<div id="info-villages" class="info-section">
-    <button class="back-btn" onclick="showMenu()">&#8592; Back</button>
-    <div class="lang-gr">
-        <h2>Χωριά</h2>
-        <p>Επισκεφθείτε το Τζερμιάδο (το κεφαλοχώρι), τον Άγιο Γεώργιο με τα μουσεία του και το Ψυχρό, κοντά στο Δικταίον Άντρον.</p>
-    </div>
-    <div class="lang-en">
-        <h2>Villages</h2>
-        <p>Visit Tzermiado (the main village), Agios Georgios with its museums, and Psychro, near the Diktaion Cave.</p>
-    </div>
-    </div>
-
-<footer>
-    &copy; 2024 Οδηγός Οροπεδίου Λασιθίου
-</footer>
 
 <script>
-    // Μεταβλητή για την τρέχουσα γλώσσα
-    let currentLang = 'gr';
+    const data = {
+        el: {
+            title: "Οροπέδιο Λασιθίου", tagline: "τόπος Θεών και Θρύλλων",
+            intro: "Το Οροπέδιο Λασιθίου είναι ένας τόπος ευλογημένος, κλεισμένος μέσα στα βουνά της Δίκτης σε υψόμετρο 850 μέτρων, που συνδυάζει τη μυθολογία, την άγρια φύση και μια μακρά ιστορία επιβίωσης. Είναι ένας από τους λίγους τόπους στην Ελλάδα που κατοικείται αδιάλειπτα για χιλιάδες χρόνια, παρά τις σκληρές κλιματικές συνθήκες.",
+            footer: "Το Οροπέδιο Λασιθίου παραμένει ένας τόπος αυθεντικός. Από τη γέννηση του Δία στο Δικταίο Άντρο, μέχρι τις θυσίες των Λασιθιωτών στις μάχες του 1867 και την παγκόσμια καινοτομία των ανεμόμυλων, η περιοχή αποτελεί έναν πυλώνα της κρητικής ταυτότητας. Είναι ένας τόπος όπου η φύση, η αρχαιολογία και η θρησκεία συνυπάρχουν σε κάθε σπιθαμή γης.",
+            b1: "Η Μυθολογική και Προϊστορική Ταυτότητα",
+            c1: "Η σημασία του Λασιθίου ξεκινά από τα έγκατα της γης, μέσα στα σπήλαιά του:<br><br><b>Δικταίο Άντρο (Το Σπήλαιο του Δία):</b> Πάνω από το χωριό Ψυχρό, βρίσκεται το σπήλαιο όπου, σύμφωνα με τη μυθολογία, η Ρέα γέννησε τον Δία. Υπήρξε ένα από τα σημαντικότερα λατρευτικά κέντρα του Μινωικού πολιτισμού. Οι ανασκαφές έφεραν στο φως αναθήματα, διπλούς πελέκεις και ειδώλια, αποδεικνύοντας ότι το σπήλαιο ήταν ενεργό για χιλιάδες χρόνια.<br><br><b>Σπήλαιο Τράπεζας (Κρόνιο):</b> Κοντά στο Τζερμιάδο, αυτό το σπήλαιο ήταν ο προκάτοχος του Δικταίου στη λατρεία. Κατοικήθηκε από τη Νεολιθική εποχή και θεωρείται ότι εκεί λατρευόταν ο Κρόνος πριν την επικράτηση του Δία.<br><br><b>Καρφί - Η Πόλη των Ετεοκρητών:</b> Μετά την κατάρρευση των Μινωικών ανακτόρων, οι γνήσιοι Κρήτες κατέφυγαν στην απόκρημνη κορυφή 'Καρφί' (1.100μ.). Εκεί έχτισαν έναν από τους τελευταίους μινωικούς οικισμούς, διατηρώντας την παράδοση και τη θρησκεία τους μακριά από τους Δωριείς εισβολείς.",
+            b2: "Η Περίοδος της Ενετοκρατίας",
+            c2: "Το Λασίθι υπήρξε το 'αγκάθι' των Ενετών στην Κρήτη:<br><br><b>Η Απαγορευμένη Ζώνη:</b> Λόγω των συνεχών επαναστάσεων, οι Ενετοί το 1263 εξόρισαν όλους τους κατοίκους, κατέστρεψαν τα δέντρα και απαγόρευσαν την κατοίκηση επί ποινή θανάτου. Για 200 χρόνια, το οροπέδιο ήταν έρημο.<br><br><b>Τα 'Λινιά' και οι Ανεμόμυλοι:</b> Τον 15ο αιώνα, για να αντιμετωπιστεί η πείνα, οι Ενετοί επέτρεψαν την καλλιέργεια σιτηρών. Κατασκεύασαν τα Λινιά (αποστραγγιστικά κανάλια) που βλέπουμε ακόμα και σήμερα. Αργότερα, η ανάγκη για νερό οδήγησε στην εφεύρεση των λευκών ανεμόμυλων, που έφτασαν τους 10.000, δημιουργώντας το πρώτο αιολικό πάρκο στον κόσμο.",
+            b3: "Η Θρησκευτική και Επαναστατική Παράδοση",
+            c3: "Οι Μονές του Λασιθίου δεν ήταν μόνο χώροι προσευχής, αλλά και ορμητήρια αγωνιστών:<br><br><b>Μονή Κρουσταλλένιας:</b> Το πνευματικό κέντρο του Λασιθίου. Κατά την Τουρκοκρατία υπήρξε έδρα της επαναστατικής επιτροπής. Καταστράφηκε δύο φορές από τους Τούρκους (1823 και 1867), αλλά ανοικοδομήθηκε κάθε φορά ως σύμβολο αντοχής.<br><br><b>Μονή Παναγίας Βιδιανής:</b> Βρίσκεται στην είσοδο του οροπεδίου και σήμερα φιλοξενεί ένα αξιόλογο Μουσείο Φυσικής Ιστορίας, αναδεικνύοντας την πλούσια βιοποικιλότητα της Δίκτης.<br><br><b>Άγιος Γεώργιος:</b> Το χωριό φιλοξενεί ένα εξαιρετικό Λαογραφικό Μουσείο, το οποίο στεγάζεται σε παραδοσιακό σπήτι και διασώζει τα εργαλεία, τις φορεσιές και τον τρόπο ζωής των προγόνων μας.",
+            b4: "Το Φυσικό Τοπίο και οι Κρυμμένοι Θησαυροί",
+            c4: "<b>Φαράγγι Χαυγά:</b> Είναι η μοναδική φυσική διέξοδος των νερών του οροπεδίου. Μια διαδρομή άγριας ομορφιάς που συνδέει το Λασίθι με το μικρότερο οροπέδιο Καθαρό.<br><br><b>Σπήλαιο Περιστεράς:</b> Ένα από τα πολλά 'δευτερεύοντα' σπήλαια (κοντά στο Καμινάκι), που προσφέρει μοναδικό σταλακτιτικό διάκοσμο για τους λάτρεις της σπηλαιολογίας.<br><br><b>Σελί Αμπέλου:</b> Το πέρασμα στην είσοδο του οροπεδίου με τους πέτρινους αλευρόμυλους, που στέκουν ως μάρτυρες της προβιομηχανικής εποχής.",
+            b5: "Ο 20ος Αιώνας: Οι Χιλιάδες Ανεμόμυλοι",
+            c5: "Αυτό που έκανε το Λασίθι παγκοσμίως γνωστό είναι το πρώτο και μεγαλύτερο αιολικό πάρκο στον κόσμο.<br><br><b>Η Εφεύρεση:</b> Στις αρχές του 1900, οι ντόπιοι μάστορες επινόησαν τον ελαφρύ, πάνινο ανεμόμυλο για να αντλούν νερό από το υπέδαφος.<br><br><b>Το Θέαμα:</b> Στις δεκαετίες του '50 και '60, πάνω από 10.000 ανεμόμυλοι με λευκά πανιά κάλυπταν τον κάμπο, δημιουργώντας ένα μοναδικό τοπίο στον πλανήτη."
+        },
+        en: {
+            title: "Lasithi Plateau", tagline: "Land of Gods and Legends",
+            intro: "The Lasithi Plateau is a blessed land, enclosed within the Dikti mountains at 850 meters, combining mythology, wild nature, and a long history of survival. It is one of the few places in Greece inhabited continuously for thousands of years, despite harsh climate.",
+            footer: "The Lasithi Plateau remains an authentic place. From the birth of Zeus in the Diktaion Antron to the global innovation of windmills, the region is a pillar of Cretan identity. It is a place where nature, archaeology, and religion coexist in every inch of land.",
+            b1: "Mythological & Prehistoric Identity",
+            c1: "The significance of Lasithi starts deep underground in its caves:<br><br><b>Diktaion Antron (Cave of Zeus):</b> Located above Psychro village, it is the legendary birthplace of Zeus. It was a major worship center of Minoan civilization.<br><br><b>Trapeza Cave (Kronio):</b> Near Tzermiado, this cave was inhabited since the Neolithic era and was dedicated to Kronos before Zeus became dominant.<br><br><b>Karfi - City of Eteocretans:</b> After the fall of Minoan palaces, genuine Cretans fled to the peak of 'Karfi' (1,100m) to preserve their tradition far from invaders.",
+            b2: "The Venetian Period",
+            c2: "Lasithi was a 'thorn' for the Venetians in Crete:<br><br><b>The Forbidden Zone:</b> Due to constant revolts, Venetians exiled all residents in 1263 and banned habitation under penalty of death for 200 years.<br><br><b>The 'Linia' and Windmills:</b> In the 15th century, to fight famine, Venetians allowed grain cultivation and built the drainage canals (Linia). This later led to the 10,000 white windmills, creating the world's first wind farm.",
+            b3: "Religious & Revolutionary Tradition",
+            c3: "Lasithi's monasteries were also bases for fighters:<br><br><b>Kroustallenia Monastery:</b> A spiritual center and revolutionary base against Ottoman rule. It was destroyed twice but rebuilt as a symbol of resilience.<br><br><b>Vidianis Monastery:</b> Located at the plateau entrance, it now hosts a Natural History Museum.<br><br><b>Agios Georgios:</b> Features an excellent Folklore Museum in a traditional house, preserving tools and costumes of our ancestors.",
+            b4: "Natural Landscape & Hidden Treasures",
+            c4: "<b>Havgas Gorge:</b> The only natural outlet for the plateau's water, connecting Lasithi with the Katharo plateau.<br><br><b>Peristeras Cave:</b> A secondary cave near Kaminaki with unique stalactite formations.<br><br><b>Seli Ampelou:</b> The entrance pass with stone flour mills, witnesses to the pre-industrial era.",
+            b5: "20th Century: Thousands of Windmills",
+            c5: "What made Lasithi famous worldwide was the first and largest wind farm in the world.<br><br><b>The Invention:</b> In the early 1900s, local craftsmen invented the light canvas windmill to pump underground water.<br><br><b>The Spectacle:</b> In the 50s and 60s, over 10,000 windmills covered the plain, creating a unique global landscape."
+        },
+        fr: {
+            title: "Plateau de Lassithi", tagline: "Terre des Dieux et des Légendes",
+            intro: "Le plateau de Lassithi est une terre bénie, entourée par les montagnes de Dikti à 850 mètres d'altitude, mêlant mythologie, nature sauvage et une longue histoire de survie. C'est l'un des rares endroits habités sans interruption depuis des millénaires.",
+            footer: "Le plateau de Lassithi reste un lieu authentique. De la naissance de Zeus aux moulins à vent, la région est un pilier de l'identité crétoise. C'est un lieu où la nature, l'archéologie et la religion coexistent.",
+            b1: "Identité Mythologique et Préhistorique",
+            c1: "L'importance de Lassithi commence dans les profondeurs de ses grottes:<br><br><b>Grotte du Dicté (Grotte de Zeus):</b> Située au-dessus de Psychro, c'est le lieu de naissance mythique de Zeus et un centre cultuel minoen majeur.<br><br><b>Grotte de Trapeza:</b> Habitée depuis le Néolithique, elle était dédiée à Cronos.<br><br><b>Karfi:</b> Ville refuge située à 1 100 m d'altitude où les Crétois ont préservé leur culture après la chute des palais.",
+            b2: "La Période Vénitienne",
+            c2: "Lassithi était l'épine dans le pied des Vénitiens:<br><br><b>Zone Interdite:</b> En 1263, l'habitation fut interdite pendant 200 ans sous peine de mort en raison des révoltes.<br><br><b>Linia et Moulins:</b> Au 15ème siècle, les Vénitiens ont construit des canaux (Linia). Cela a conduit à l'invention des 10 000 moulins blancs, le premier parc éolien au monde.",
+            b3: "Tradition Religieuse et Révolutionnaire",
+            c3: "Les monastères étaient des bases de combattants:<br><br><b>Monastère Kroustallenia:</b> Centre spirituel et révolutionnaire contre les Turcs, détruit deux fois et reconstruit.<br><br><b>Monastère Vidianis:</b> Abrite aujourd'hui un musée d'histoire naturelle.<br><br><b>Agios Georgios:</b> Musée folklorique dans une maison traditionnelle préservant les outils et les costumes.",
+            b4: "Paysage Naturel et Trésors Cachés",
+            c4: "<b>Gorge de Havgas:</b> La seule sortie naturelle des eaux vers le plateau de Katharo.<br><br><b>Grotte Peristeras:</b> Stalactites impressionnantes près de Kaminaki.<br><br><b>Seli Ampelou:</b> Col d'entrée avec d'anciens moulins à farine en pierre.",
+            b5: "20ème Siècle: Les Milliers de Moulins",
+            c5: "Lassithi est devenu célèbre pour son immense parc éolien.<br><br><b>L'Invention:</b> Au début du 20ème siècle, des artisans ont créé des moulins en toile pour pomper l'eau.<br><br><b>Le Spectacle:</b> Dans les années 50-60, 10 000 moulins blancs couvraient la plaine."
+        },
+        de: {
+            title: "Lasithi-Hochebene", tagline: "Land der Götter und Legenden",
+            intro: "Die Lasithi-Hochebene ist ein gesegnetes Land in 850 Metern Höhe, das Mythologie, Natur und eine lange Überlebensgeschichte vereint. Es ist seit Jahrtausenden ununterbrochen bewohnt.",
+            footer: "Die Lasithi-Hochebene bleibt ein authentischer Ort. Von der Geburt des Zeus bis zur Innovation der Windmühlen ist die Region ein Pfeiler kretischer Identität.",
+            b1: "Mythologische und prähistorische Identität",
+            c1: "Die Bedeutung von Lasithi beginnt in den Höhlen:<br><br><b>Psychro-Höhle (Geburtsort des Zeus):</b> Ein bedeutendes Heiligtum der minoischen Zivilisation.<br><br><b>Trapeza-Höhle:</b> Seit der Jungsteinzeit bewohnt, dem Kronos gewidmet.<br><br><b>Karfi:</b> Eine Zufluchtsstätte auf 1.100 m Höhe, in der die minoische Kultur bewahrt wurde.",
+            b2: "Die venezianische Zeit",
+            c2: "Lasithi war der 'Dorn' im Auge der Venezianer:<br><br><b>Die verbotene Zone:</b> Ab 1263 war die Besiedlung wegen Aufständen für 200 Jahre bei Todesstrafe verboten.<br><br><b>Linia und Windmühlen:</b> Im 15. Jahrhundert wurden Drainagekanäle (Linia) gebaut. Dies führte später zu den 10.000 Windmühlen, dem ersten Windpark der Welt.",
+            b3: "Religiöse und revolutionäre Tradition",
+            c3: "Klöster waren Zentren des Widerstands:<br><br><b>Kloster Kroustallenia:</b> Ein spirituelles Zentrum und Basis gegen die Osmanen.<br><br><b>Kloster Vidianis:</b> Beherbergt heute ein Naturkundemuseum.<br><br><b>Agios Georgios:</b> Volkskundemuseum mit traditionellen Werkzeugen und Trachten.",
+            b4: "Naturlandschaft und verborgene Schätze",
+            c4: "<b>Havgas-Schlucht:</b> Eine wilde Route zur Katharo-Hochebene.<br><br><b>Peristeras-Höhle:</b> Einzigartige Tropfsteinhöhle bei Kaminaki.<br><br><b>Seli Ampelou:</b> Eingangspass mit historischen Steinmühlen.",
+            b5: "20. Jahrhundert: Die Tausenden von Windmühlen",
+            c5: "Lasithi ist weltweit bekannt für den ersten und größten Windpark.<br><br><b>Die Erfindung:</b> Anfang 1900 erfanden lokale Meister die Stoff-Windmühlen zur Wasserförderung.<br><br><b>Das Spektakel:</b> In den 50er Jahren prägten 10.000 weiße Segel die Landschaft."
+        }
+    };
 
-    // Σύστημα Αλλαγής Γλώσσας
-    function setLanguage(lang) {
+    let currentLang = 'el';
+
+    function setLang(lang) {
         currentLang = lang;
-
-        // 1. Ενημέρωση των σημαιών (active class)
-        document.querySelectorAll('.flag-btn').forEach(btn => btn.classList.remove('active'));
-        const activeFlag = document.querySelector(`.flag-btn[onclick="setLanguage('${lang}')"]`);
-        if (activeFlag) activeFlag.classList.add('active');
-
-        // 2. Εμφάνιση/Απόκρυψη κειμένων σε όλη τη σελίδα
-        // Πρώτα κρύβουμε όλα τα ξενόγλωσσα στοιχεία
-        document.querySelectorAll('[class*="lang-"]').forEach(el => {
-            el.style.display = 'none';
-        });
+        document.getElementById('txt-title').innerText = data[lang].title;
+        document.getElementById('txt-tagline').innerText = data[lang].tagline;
+        document.getElementById('txt-intro').innerText = data[lang].intro;
+        document.getElementById('txt-footer').innerText = data[lang].footer;
+        for(let i=1; i<=5; i++) document.getElementById('btn-'+i).innerText = data[lang]['b'+i];
         
-        // Μετά εμφανίζουμε μόνο αυτά της επιλεγμένης γλώσσας
-        document.querySelectorAll('.lang-' + lang).forEach(el => {
-            // Ειδική μεταχείριση για τα buttons στο main menu
-            if (el.classList.contains('menu-btn')) {
-                // Εμφανίζουμε το button, αλλά μόνο αν είμαστε στο main menu view
-                if (document.getElementById('main-menu').style.display !== 'none') {
-                    el.style.display = 'block';
-                }
-            } else {
-                el.style.display = 'block';
-            }
+        document.querySelectorAll('.flag').forEach(f => {
+            f.classList.remove('active');
+            if (f.getAttribute('onclick').includes(lang)) f.classList.add('active');
         });
     }
 
-    // Εμφάνιση Συγκεκριμένου Πεδίου Πληροφοριών
-    function showSection(sectionId) {
-        // 1. Κρύβουμε το κύριο μενού
-        document.getElementById('main-menu').style.display = 'none';
-
-        // 2. Εμφανίζουμε το σωστό info section
-        const section = document.getElementById(sectionId);
-        section.classList.add('active');
-
-        // 3. Σιγουρευόμαστε ότι εμφανίζεται η σωστή γλώσσα
-        setLanguage(currentLang);
-        
-        // 4. Scroll στην κορυφή
-        window.scrollTo(0, 0);
+    function showPopup(id) {
+        document.getElementById('pop-title').innerText = data[currentLang]['b'+id];
+        document.getElementById('pop-text').innerHTML = data[currentLang]['c'+id];
+        document.getElementById('modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     }
 
-    // Επιστροφή στο Κυρίως Μενού
-    function showMenu() {
-        // 1. Κρύβουμε όλα τα info sections
-        document.querySelectorAll('.info-section').forEach(section => {
-            section.classList.remove('active');
-        });
-
-        // 2. Εμφανίζουμε το κύριο μενού
-        document.getElementById('main-menu').style.display = 'flex';
-        
-        // 3. Σιγουρευόμαστε ότι τα κουμπιά του μενού είναι στη σωστή γλώσσα
-        setLanguage(currentLang);
+    function closePopup() { 
+        document.getElementById('modal').style.display = 'none'; 
+        document.body.style.overflow = 'auto';
     }
-
-    // Αρχική ρύθμιση γλώσσας κατά τη φόρτωση
-    document.addEventListener('DOMContentLoaded', () => {
-        setLanguage('gr');
-    });
 </script>
 
 </body>
